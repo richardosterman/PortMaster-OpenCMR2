@@ -27,13 +27,15 @@ jobs:
         cd source
         mkdir build && cd build
         
-        # Vi skapar toolchain-konfigurationen direkt i GitHub Actions
+        # Konfigurera toolchain för att använda Clang riktat mot ARM64 (aarch64)
         echo "set(CMAKE_SYSTEM_NAME Linux)" > toolchain.cmake
         echo "set(CMAKE_SYSTEM_PROCESSOR aarch64)" >> toolchain.cmake
-        echo "set(CMAKE_C_COMPILER aarch64-linux-gnu-gcc)" >> toolchain.cmake
-        echo "set(CMAKE_CXX_COMPILER aarch64-linux-gnu-g++)" >> toolchain.cmake
+        echo "set(CMAKE_C_COMPILER clang)" >> toolchain.cmake
+        echo "set(CMAKE_C_COMPILER_TARGET aarch64-linux-gnu)" >> toolchain.cmake
+        echo "set(CMAKE_CXX_COMPILER clang++)" >> toolchain.cmake
+        echo "set(CMAKE_CXX_COMPILER_TARGET aarch64-linux-gnu)" >> toolchain.cmake
         
-        # Kör CMake med vår genererade toolchain
+        # Kör CMake och kompilera
         cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake -DCMAKE_BUILD_TYPE=Release ..
         make -j$(nproc)
 
