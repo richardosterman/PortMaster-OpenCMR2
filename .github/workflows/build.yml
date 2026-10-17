@@ -1,0 +1,34 @@
+name: Build OpenCMR2 for PortMaster
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/portmaster-ports/build-env:latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Clone OpenCMR2 Source
+      run: |
+        git clone --recursive https://github.com source
+        
+    - name: Configure and Build
+      run: |
+        cd source
+        mkdir build && cd build
+        # Vi använder PortMasters inbyggda toolchain för ARM64
+        cmake -DCMAKE_TOOLCHAIN_FILE=/opt/toolchains/aarch64.cmake -DCMAKE_BUILD_TYPE=Release ..
+        make -j$(nproc)
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: opencmr2-portmaster-bin
+        path: source/build/
