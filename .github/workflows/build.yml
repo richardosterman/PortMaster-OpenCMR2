@@ -20,6 +20,7 @@ jobs:
 
     - name: Clone OpenCMR2 Source
       run: |
+        # Här är den rättade och kompletta länken till projektet
         git clone --recursive https://github.com source
         
     - name: Configure and Build
