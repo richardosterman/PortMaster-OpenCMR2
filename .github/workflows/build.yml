@@ -45,6 +45,8 @@ jobs:
               -DSDL_X11=OFF \
               -DSDL_WAYLAND=OFF \
               -DSDL_KMSDRM=ON \
+              -DOPENCMR2_VENDORED_SDL=ON \
+              -DSDL_STATIC=ON \
               -DGLSLANG_VALIDATOR=/usr/bin/glslangValidator \
               ..
               
