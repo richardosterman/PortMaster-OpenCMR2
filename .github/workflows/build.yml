@@ -16,7 +16,10 @@ jobs:
     - name: Install Cross-Compiler and Build Tools
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential cmake git gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+        sudo apt-get install -y build-essential cmake git clang gcc-aarch64-linux-gnu g++-aarch64-linux-gnu libdrm-dev libgbm-dev glslang-tools
+        
+        # Säkerställ att det finns en länk med exakt rätt namn i systemet
+        sudo ln -s /usr/bin/glslangValidator /usr/bin/glslang
 
     - name: Clone OpenCMR2 Source
       run: |
@@ -35,13 +38,14 @@ jobs:
         echo "set(CMAKE_CXX_COMPILER clang++)" >> toolchain.cmake
         echo "set(CMAKE_CXX_COMPILER_TARGET aarch64-linux-gnu)" >> toolchain.cmake
         
-        # Kör CMake och bygg för PortMaster
+        # Kör CMake med den explicita sökvägen till glslangValidator
         cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release \
               -DSDL_UNIX_CONSOLE_BUILD=ON \
               -DSDL_X11=OFF \
               -DSDL_WAYLAND=OFF \
               -DSDL_KMSDRM=ON \
+              -DGLSLANG_VALIDATOR=/usr/bin/glslangValidator \
               ..
               
         make -j$(nproc)
