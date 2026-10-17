@@ -35,7 +35,7 @@ jobs:
         echo "set(CMAKE_CXX_COMPILER clang++)" >> toolchain.cmake
         echo "set(CMAKE_CXX_COMPILER_TARGET aarch64-linux-gnu)" >> toolchain.cmake
         
-        # Kör CMake med flaggor som stänger av skrivbordsmiljöer och slår på skärmstöd för handhållna enheter
+        # Kör CMake och bygg för PortMaster
         cmake -DCMAKE_TOOLCHAIN_FILE=toolchain.cmake \
               -DCMAKE_BUILD_TYPE=Release \
               -DSDL_UNIX_CONSOLE_BUILD=ON \
